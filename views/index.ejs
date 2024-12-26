@@ -6,6 +6,8 @@
     <title>Encuentrame</title>
 </head>
 <body>
+
+    <!-- Informacion acerca del usuario-->
     <div class="user-data">
         <h2>Datos del cliente</h2>
         <ul>
@@ -16,30 +18,30 @@
         </ul>
     </div>
 
-    <div class="user-data">
+    <div class="ip-data">
+        
+        <!-- Formulario para buscar un direccion IP -->
         <form action="/search-ip" method="post" id="form">
             <label for="ip">Buscar IP:</label>
-            <input type="text" name="ip" id="ip" placeholder="Escribe una IP">
+            <input type="text" name="ip" id="ip" placeholder="Escribe una IP" required>
             <button type="submit">Buscar</button>
         </form>
 
-        <div style="display: none;" id="retrieved-data">
-            <ul>
-                <li>IP: <b><%= dataIP.ip %></b></li>
-                <li>Ciudad de la IP: <b><%= dataIP.city %></b></li>
-                <li>Region de la IP: <b><%= dataIP.region %></b></li>
-                <li>Pais de la IP: <b><%= dataIP.country %></b></li>
-            </ul>
-        </div>
+        <!-- Valida si hay informacion sobre la IP buscada -->
+        <% if (dataIP) { %>
+
+            <!-- Informacion de la IP buscada -->
+            <div>
+                <ul>
+                    <li>IP: <b><%= dataIP.ip %></b></li>
+                    <li>Ciudad de la IP: <b><%= dataIP.city %></b></li>
+                    <li>Region de la IP: <b><%= dataIP.region %></b></li>
+                    <li>Pais de la IP: <b><%= dataIP.country %></b></li>
+                </ul>
+                <a target="_blank" href="https://www.google.com/maps/place/<%= dataIP.loc %>">Ver direccion en Google Maps</a>
+            </div>
+        <% } %>
+
     </div>
-
-    <script>
-        const form = document.getElementById('form');
-        const retrievedData = document.getElementById('retrieved-data');
-
-        form.addEventListener('submit', () => {
-            retrievedData.style.display = 'block';
-        });
-    </script>
 </body>
 </html>
