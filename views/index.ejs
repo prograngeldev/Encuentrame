@@ -4,44 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Encuentrame</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Serif:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Jockey+One&display=swap" rel="stylesheet">
+
+    <style>
+        .title::after {
+            content: '';
+            background-image: url('../assets/Globe.svg');
+            width: 30px;
+            height: 30px;
+            background-size: cover;
+            position: absolute;
+            top: -10px;
+        }
+    </style>
 </head>
-<body>
+<body class="min-h-screen bg-blue-950 p-8">
 
-    <!-- Informacion acerca del usuario-->
-    <div class="user-data">
-        <h2>Datos del cliente</h2>
-        <ul>
-            <li>IP del cliente: <b><%= dataUser.ip %></b></li>
-            <li>Ciudad del cliente: <b><%= dataUser.city %></b></li>
-            <li>Region del cliente: <b><%= dataUser.region %></b></li>
-            <li>Pais del cliente: <b><%= dataUser.country %></b></li>
-        </ul>
-    </div>
+    <h1 class="title font-jockeyOne text-5xl font-bold text-center bg-gradient-to-r from-[#BEF0E1] to-[#75948B] text-transparent bg-clip-text relative mb-8">Encuentrame</h1>
 
-    <div class="ip-data">
-        
-        <!-- Formulario para buscar un direccion IP -->
-        <form action="/search-ip" method="post" id="form">
-            <label for="ip">Buscar IP:</label>
-            <input type="text" name="ip" id="ip" placeholder="Escribe una IP" required>
-            <button type="submit">Buscar</button>
-        </form>
+    <main class="font-inriaSerif grid text-slate-200 gap-8 auto-rows-fr">
 
-        <!-- Valida si hay informacion sobre la IP buscada -->
-        <% if (dataIP) { %>
+        <!-- Informacion acerca del usuario-->
+        <div class="user-data flex flex-col items-center gap-2">
+            <h2 class="font-jockeyOne text-3xl text-emerald-200 underline underline-offset-4">Informacion sobre mi IP</h2>
+            <ul class="text-xl/8 font-bold">
+                <li>Direccion IP: <b><%= dataUser.ip %></b></li>
+                <li>Ciudad: <b><%= dataUser.city %></b></li>
+                <li>Region: <b><%= dataUser.region %></b></li>
+                <li>Pais: <b><%= dataUser.country %></b></li>
+            </ul>
+            <a class="font-jockeyOne text-2xl text-emerald-200" target="_blank" href="https://www.google.com/maps/place/<%= dataUser.loc %>">Visitar lugar en Google Maps</a>
+        </div>
 
-            <!-- Informacion de la IP buscada -->
-            <div>
-                <ul>
-                    <li>IP: <b><%= dataIP.ip %></b></li>
-                    <li>Ciudad de la IP: <b><%= dataIP.city %></b></li>
-                    <li>Region de la IP: <b><%= dataIP.region %></b></li>
-                    <li>Pais de la IP: <b><%= dataIP.country %></b></li>
-                </ul>
-                <a target="_blank" href="https://www.google.com/maps/place/<%= dataIP.loc %>">Ver direccion en Google Maps</a>
-            </div>
-        <% } %>
+        <div class="flex flex-col items-center self-center">
+            <!-- Formulario para buscar un direccion IP -->
+            <form class="inline-block" action="/search-ip" method="post" id="form">
+                <label class="font-jockeyOne text-2xl text-emerald-200 mb-1 inline-block" for="ip">Buscar IP</label>
+                <div class="flex items-center gap-2">
+                    <input class="px-2 py-[0.35rem] w-60 rounded-lg text-lg text-teal-900 placeholder:text-teal-900/50" type="text" name="ip" id="ip" placeholder="Ej: 192.24.1.1" required>
+                    <button class="bg-slate-200 p-[0.6rem] rounded-full" type="submit"><img class="h-5" src="/assets/Magnifying Glass.svg" alt="Lupa"></button>
+                </div>
+            </form>
 
-    </div>
+            <!-- Valida si hay informacion sobre la IP buscada -->
+            <% if (dataIP) { %>
+
+                <!-- Informacion de la IP buscada -->
+                <div>
+                    <ul>
+                        <li>Direccion IP: <b><%= dataIP.ip %></b></li>
+                        <li>Ciudad: <b><%= dataIP.city %></b></li>
+                        <li>Region: <b><%= dataIP.region %></b></li>
+                        <li>Pais: <b><%= dataIP.country %></b></li>
+                    </ul>
+                    <a target="_blank" href="https://www.google.com/maps/place/<%= dataIP.loc %>">Visitar lugar en Google Maps</a>
+                </div>
+            <% } %>
+
+        </div>
+    </main>
+
+    <img class="w-28 absolute top-0 left-0 -z-10" src="/assets/Branch.svg" alt="Rama de arbol">
+    <img class="w-28 absolute bottom-0 right-0 rotate-180" src="/assets/Branch.svg" alt="Rama de arbol">
+
 </body>
 </html>

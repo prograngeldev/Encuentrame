@@ -1,8 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./public/css/**/*.{html,js}"],
+  content: ["./views/**/*.{html,js,ejs}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        jockeyOne: ['"Jockey One"', 'serif'],
+        inriaSerif: ['"Inria Serif"', 'serif'],
+      },
+    },
   },
   plugins: [],
 }
