@@ -55,6 +55,7 @@
                         <img class="h-5" src="/assets/Magnifying Glass.svg" alt="Lupa">
                     </button>
                 </div>
+                <p id="warning-msg" class="text-emerald-200">¡Puede tardar unos segundos!</p>
             </form>
 
             <!-- Informacion de la IP buscada -->
@@ -78,6 +79,7 @@
         const main = document.getElementById('main');
         const searchIp = document.getElementById('search-ip');
         const form = document.getElementById('form');
+        const warningMsg = document.getElementById('warning-msg');
         const ipFromIp = document.getElementById('ip-ip');
         const cityFromIp = document.getElementById('ip-city');
         const regionFromIp = document.getElementById('ip-region');
@@ -98,6 +100,7 @@
                 regionFromIp.textContent = data.region;
                 countryFromIp.textContent = data.country;
                 locationFromIp.href = `https://www.google.com/maps/place/${data.loc}`;
+                warningMsg.classList.add('hidden');
                 main.classList.add('items-center')
                 searchIp.classList.remove('translate-y-12');
                 retrievedIpDiv.classList.remove('unvisible');
