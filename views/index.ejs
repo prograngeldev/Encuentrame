@@ -19,56 +19,94 @@
             position: absolute;
             top: -10px;
         }
+
+        .unvisible {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-50px);
+        }
     </style>
 </head>
-<body class="min-h-screen bg-blue-950 p-8">
+<body class="min-h-screen bg-blue-950 p-8 grid grid-rows-layout place-items-center relative">
 
-    <h1 class="title font-jockeyOne text-5xl font-bold text-center bg-gradient-to-r from-[#BEF0E1] to-[#75948B] text-transparent bg-clip-text relative mb-8">Encuentrame</h1>
+    <h1 class="title font-jockeyOne text-5xl font-bold text-center mb-8 bg-gradient-to-r from-[#BEF0E1] to-[#75948B] text-transparent bg-clip-text relative md:mb-0 md:text-6xl">Encuentrame</h1>
 
-    <main class="font-inriaSerif grid text-slate-200 gap-8 auto-rows-fr">
+    <main id="main" class="font-inriaSerif grid text-slate-200 gap-8 auto-rows-fr w-full max-w-4xl lg:grid-flow-col lg:gap-[15%]">
 
         <!-- Informacion acerca del usuario-->
-        <div class="user-data flex flex-col items-center gap-2">
-            <h2 class="font-jockeyOne text-3xl text-emerald-200 underline underline-offset-4">Informacion sobre mi IP</h2>
-            <ul class="text-xl/8 font-bold">
+        <div class="flex flex-col items-center gap-2">
+            <h2 class="font-jockeyOne text-3xl text-emerald-200 underline underline-offset-4 lg:text-4xl">Informacion sobre mi IP</h2>
+            <ul class="text-xl/8 font-bold lg:text-2xl/10">
                 <li>Direccion IP: <b><%= dataUser.ip %></b></li>
                 <li>Ciudad: <b><%= dataUser.city %></b></li>
                 <li>Region: <b><%= dataUser.region %></b></li>
                 <li>Pais: <b><%= dataUser.country %></b></li>
             </ul>
-            <a class="font-jockeyOne text-2xl text-emerald-200" target="_blank" href="https://www.google.com/maps/place/<%= dataUser.loc %>">Visitar lugar en Google Maps</a>
+            <a class="font-jockeyOne text-2xl text-emerald-200 lg:text-3xl" target="_blank" href="https://www.google.com/maps/place/<%= dataUser.loc %>">Visitar lugar en Google Maps</a>
         </div>
 
-        <div class="flex flex-col items-center self-center">
+        <div id="search-ip" class="flex flex-col items-center gap-2 translate-y-12 transition">
             <!-- Formulario para buscar un direccion IP -->
-            <form class="inline-block" action="/search-ip" method="post" id="form">
-                <label class="font-jockeyOne text-2xl text-emerald-200 mb-1 inline-block" for="ip">Buscar IP</label>
+            <form method="get" class="inline-block" id="form">
+                <label class="font-jockeyOne text-2xl text-emerald-200 mb-1 inline-block lg:text-3xl" for="ip">Buscar IP</label>
                 <div class="flex items-center gap-2">
-                    <input class="px-2 py-[0.35rem] w-60 rounded-lg text-lg text-teal-900 placeholder:text-teal-900/50" type="text" name="ip" id="ip" placeholder="Ej: 192.24.1.1" required>
-                    <button class="bg-slate-200 p-[0.6rem] rounded-full" type="submit"><img class="h-5" src="/assets/Magnifying Glass.svg" alt="Lupa"></button>
+                    <input class="px-2 py-[0.35rem] w-60 rounded-lg text-lg text-teal-900 placeholder:text-teal-900/50 lg:w-72 lg:py-2 lg:text-xl" type="text" name="ip" id="ip" placeholder="Ej: 192.24.1.1" required>
+                    <button class="bg-slate-200 p-[0.6rem] rounded-full lg:p-3" type="submit" id="form-btn">
+                        <img class="h-5" src="/assets/Magnifying Glass.svg" alt="Lupa">
+                    </button>
                 </div>
             </form>
 
-            <!-- Valida si hay informacion sobre la IP buscada -->
-            <% if (dataIP) { %>
-
-                <!-- Informacion de la IP buscada -->
-                <div>
-                    <ul>
-                        <li>Direccion IP: <b><%= dataIP.ip %></b></li>
-                        <li>Ciudad: <b><%= dataIP.city %></b></li>
-                        <li>Region: <b><%= dataIP.region %></b></li>
-                        <li>Pais: <b><%= dataIP.country %></b></li>
-                    </ul>
-                    <a target="_blank" href="https://www.google.com/maps/place/<%= dataIP.loc %>">Visitar lugar en Google Maps</a>
-                </div>
-            <% } %>
+            <!-- Informacion de la IP buscada -->
+            <div id="retrieved-ip-div" class="unvisible flex flex-col items-center gap-2 opacity-100 visible translate-y-0 transition">
+                <ul class="text-xl/8 font-bold lg:text-2xl/10">
+                    <li>Direccion IP: <b id="ip-ip"></b></li>
+                    <li>Ciudad: <b id="ip-city"></b></li>
+                    <li>Region: <b id="ip-region"></b></li>
+                    <li>Pais: <b id="ip-pais"></b></li>
+                </ul>
+                <a class="font-jockeyOne text-2xl text-emerald-200 lg:text-3xl" target="_blank" href="#" id="location">Visitar lugar en Google Maps</a>
+            </div>
 
         </div>
     </main>
 
-    <img class="w-28 absolute top-0 left-0 -z-10" src="/assets/Branch.svg" alt="Rama de arbol">
-    <img class="w-28 absolute bottom-0 right-0 rotate-180" src="/assets/Branch.svg" alt="Rama de arbol">
+    <img class="w-28 absolute top-0 left-0 -z-10 md:w-32 lg:w-48" src="/assets/Branch.svg" alt="Rama de arbol">
+    <img class="w-28 absolute bottom-0 right-0 rotate-180 -z-10 md:w-32 lg:w-48" src="/assets/Branch.svg" alt="Rama de arbol">
+
+    <script>
+        const main = document.getElementById('main');
+        const searchIp = document.getElementById('search-ip');
+        const form = document.getElementById('form');
+        const ipFromIp = document.getElementById('ip-ip');
+        const cityFromIp = document.getElementById('ip-city');
+        const regionFromIp = document.getElementById('ip-region');
+        const countryFromIp = document.getElementById('ip-pais');
+        const locationFromIp = document.getElementById('location');
+        const retrievedIpDiv = document.getElementById('retrieved-ip-div');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const ip = formData.get('ip');
+
+            fetch(`https://ipinfo.io/${ip}/json`)
+            .then(response => response.json())
+            .then(data => {
+                ipFromIp.textContent = data.ip;
+                cityFromIp.textContent = data.city;
+                regionFromIp.textContent = data.region;
+                countryFromIp.textContent = data.country;
+                locationFromIp.href = `https://www.google.com/maps/place/${data.loc}`;
+                main.classList.add('items-center')
+                searchIp.classList.remove('translate-y-12');
+                retrievedIpDiv.classList.remove('unvisible');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
 
 </body>
 </html>
