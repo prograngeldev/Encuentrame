@@ -852,6 +852,10 @@ video {
     grid-auto-flow: column;
   }
 
+  .lg\:items-center {
+    align-items: center;
+  }
+
   .lg\:gap-\[15\%\] {
     gap: 15%;
   }

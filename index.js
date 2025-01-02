@@ -6,13 +6,16 @@ const port = 3000;
 
 // Configuración de express
 app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
 
 // Ruta home
 app.get('/', async (req, res) => {
   // Hace la consulta a la API para solicitar informacion acerca de la ip del cliente en un bloque try...catch
   try {
     // Consulta a la API
-    const response = await axios.get('https://ipinfo.io/json');
+    const forwarded = req.headers['x-forwarded-for'];
+    const ip = forwarded ? forwarded.split(',')[0] : req.connection.remoteAddress;
+    const response = await axios.get(`https://ipinfo.io/${ip}/json`);
     const result = response.data;
 
     res.render('index.ejs', { dataUser: result });
